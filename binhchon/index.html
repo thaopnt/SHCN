@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bình chọn thời gian SHCN HK1A 2026–2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --navy-900:#101B44;
+    --navy-800:#1B2A5C;
+    --navy-700:#2E4494;
+    --blue-accent:#2F6FED;
+    --blue-tint:#EAF1FE;
+    --navy-tint:#E7E9F5;
+    --bg:#EEF0F8;
+    --card:#FFFFFF;
+    --border:#DFE2F1;
+    --text-dark:#1C2440;
+    --text-muted:#646E93;
+    --green:#1F9D66;
+    --green-tint:#E4F7EE;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Be Vietnam Pro',-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text-dark);
+    display:flex;
+    justify-content:center;
+    padding:20px 12px 48px;
+    min-height:100vh;
+  }
+  .page{
+    width:100%;
+    max-width:460px;
+    background:var(--card);
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:0 18px 40px rgba(20,28,70,0.14);
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    background:linear-gradient(160deg,var(--navy-900) 0%, var(--navy-700) 100%);
+    color:#fff;
+    padding:28px 24px 22px;
+    position:relative;
+  }
+  .class-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.14);
+    padding:5px 12px;
+    border-radius:100px;
+    font-size:12.5px;
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  header h1{
+    margin:0 0 8px;
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:0.3px;
+    line-height:1.35;
+    text-transform:uppercase;
+  }
+  header p{
+    margin:0;
+    font-size:13.5px;
+    color:rgba(255,255,255,0.82);
+    line-height:1.5;
+  }
+  .divider-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:18px;
+  }
+  .divider-row .line{flex:1;height:1px;background:rgba(255,255,255,0.28);}
+  .divider-row .dot{width:6px;height:6px;border-radius:50%;background:#fff;}
+  .divider-row i{font-size:11px;color:rgba(255,255,255,0.55);}
+
+  .vote-count{
+    margin-top:16px;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:12.5px;
+    color:#fff;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.22);
+    padding:6px 12px;
+    border-radius:100px;
+  }
+  .vote-count strong{font-weight:800;}
+
+  .results-link{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:600;
+    padding:7px 13px;
+    border-radius:100px;
+    cursor:pointer;
+  }
+  .results-link:hover{background:rgba(255,255,255,0.1);}
+  .results-link.locked{opacity:0.7;border-style:dashed;}
+  .gate-notice{
+    display:none;
+    margin-top:8px;
+    font-size:12px;
+    color:#FFE9A8;
+  }
+
+  .result-row{margin-bottom:13px;}
+  .result-row .r-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:6px;gap:8px;}
+  .result-row .r-label{font-weight:600;}
+  .result-row .r-count{color:var(--text-muted);font-size:12px;white-space:nowrap;}
+  .result-row .r-track{height:9px;border-radius:6px;background:var(--bg);overflow:hidden;}
+  .result-row .r-fill{height:100%;border-radius:6px;background:var(--blue-accent);}
+  .result-row.offline .r-fill{background:var(--navy-800);}
+
+  .respondent{padding:10px 0;border-bottom:1px solid var(--border);}
+  .respondent:last-child{border-bottom:none;}
+  .respondent .r-name{font-weight:600;font-size:13.5px;}
+  .respondent .r-choices{color:var(--text-muted);font-size:12px;line-height:1.6;margin-top:2px;}
+
+  /* ---------- Sections ---------- */
+  section{padding:22px 24px 4px;}
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .icon-circle{
+    width:32px;height:32px;min-width:32px;
+    border-radius:10px;
+    background:var(--navy-tint);
+    color:var(--navy-800);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;
+  }
+  .section-head h2{
+    margin:0;
+    font-size:16.5px;
+    font-weight:700;
+  }
+  .section-sub{
+    margin:-6px 0 14px;
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.5;
+  }
+
+  .content-list{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:12px;}
+  .content-list li{
+    display:flex;
+    gap:11px;
+    align-items:flex-start;
+    font-size:14px;
+    line-height:1.55;
+  }
+  .content-list .dot-icon{
+    width:8px;height:8px;min-width:8px;
+    border-radius:50%;
+    background:var(--blue-accent);
+    margin-top:7px;
+  }
+
+  /* ---------- Time groups ---------- */
+  .time-group{
+    border-radius:16px;
+    padding:14px 14px 6px;
+    margin-bottom:16px;
+    border:1px solid var(--border);
+  }
+  .time-group.offline{border-left:4px solid var(--navy-800);}
+  .time-group.online{border-left:4px solid var(--blue-accent);}
+  .group-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .group-label.offline{color:var(--navy-800);}
+  .group-label.online{color:var(--blue-accent);}
+
+  .slot{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    background:#fff;
+    margin-bottom:8px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .slot input{display:none;}
+  .slot .box{
+    width:20px;height:20px;min-width:20px;
+    border-radius:6px;
+    border:2px solid #C9CEE3;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:11px;
+    transition:all .15s ease;
+  }
+  .slot .info{display:flex;flex-direction:column;gap:1px;}
+  .slot .info .day{font-size:13.5px;font-weight:600;}
+  .slot .info .time{font-size:12.5px;color:var(--text-muted);}
+
+  .time-group.offline .slot.selected{border-color:var(--navy-800);background:var(--navy-tint);}
+  .time-group.offline .slot.selected .box{background:var(--navy-800);border-color:var(--navy-800);}
+  .time-group.online .slot.selected{border-color:var(--blue-accent);background:var(--blue-tint);}
+  .time-group.online .slot.selected .box{background:var(--blue-accent);border-color:var(--blue-accent);}
+
+  .note-line{font-size:11.5px;color:var(--text-muted);margin:2px 2px 6px;}
+
+  /* ---------- Inputs ---------- */
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:7px;
+    color:var(--text-dark);
+  }
+  .field input[type=text]{
+    width:100%;
+    padding:12px 13px;
+    border-radius:12px;
+    border:1.5px solid var(--border);
+    font-family:inherit;
+    font-size:14px;
+    color:var(--text-dark);
+    background:#FBFBFE;
+  }
+  .field input[type=text]:focus{
+    outline:none;
+    border-color:var(--blue-accent);
+    background:#fff;
+  }
+  .field .hint{font-size:11.5px;color:var(--text-muted);margin-top:6px;}
+
+  .error-msg{
+    display:none;
+    font-size:12.5px;
+    color:#C0392B;
+    background:#FDECEA;
+    border-radius:10px;
+    padding:9px 12px;
+    margin-bottom:14px;
+  }
+
+  .submit-btn{
+    width:100%;
+    padding:14px;
+    background:var(--navy-800);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    margin:6px 0 22px;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .submit-btn:active{transform:scale(0.98);}
+  .submit-btn:hover{background:var(--navy-700);}
+  .submit-btn:focus-visible{outline:3px solid var(--blue-accent);outline-offset:2px;}
+
+  /* ---------- Confirmation ---------- */
+  .confirm-panel{display:none;padding:32px 24px 26px;text-align:center;}
+  .confirm-icon{
+    width:56px;height:56px;
+    border-radius:50%;
+    background:var(--green-tint);
+    color:var(--green);
+    display:flex;align-items:center;justify-content:center;
+    font-size:24px;
+    margin:0 auto 16px;
+  }
+  .confirm-panel h3{margin:0 0 8px;font-size:18px;font-weight:800;}
+  .confirm-panel p{margin:0 0 18px;font-size:13.5px;color:var(--text-muted);line-height:1.6;}
+  .recap{
+    text-align:left;
+    background:var(--bg);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:18px;
+  }
+  .recap div{font-size:13.5px;line-height:1.7;}
+  .recap strong{color:var(--navy-800);}
+  .redo-link{
+    background:none;border:none;
+    color:var(--blue-accent);
+    font-family:inherit;font-size:13px;font-weight:600;
+    cursor:pointer;text-decoration:underline;
+  }
+
+  /* ---------- Footer note ---------- */
+  .footnote{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    background:#FFF8E8;
+    margin:0 24px 24px;
+    padding:12px 15px;
+    border-radius:14px;
+  }
+  .footnote .bell{
+    width:32px;height:32px;min-width:32px;
+    border-radius:50%;
+    background:var(--navy-800);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;
+  }
+  .footnote-title{margin:0 0 1px;font-size:11.5px;font-weight:600;color:#8A742E;text-transform:uppercase;letter-spacing:0.3px;}
+  .footnote-time{margin:0;font-size:16px;font-weight:800;color:#4A3E14;line-height:1.25;}
+  .footnote-time span{font-size:12.5px;font-weight:600;color:#8A742E;margin-left:4px;}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header>
+    <span class="class-pill"><i class="fa-solid fa-graduation-cap"></i>&nbsp;Lớp 25D1GPD02</span>
+    <h1>Bình chọn thời gian SHCN HK1A 2026–2027</h1>
+    <p>Chủ trì: GVCN - cô Thảo</p>
+    <div class="divider-row">
+      <span class="dot"></span><span class="line"></span>
+      <i class="fa-solid fa-angles-right"></i>
+      <span class="line"></span><span class="dot"></span>
+    </div>
+    <div class="vote-count" id="voteCount" style="display:none;">
+      <i class="fa-solid fa-chart-simple"></i>
+      Đã có <strong id="voteCountNum">0</strong> em bình chọn
+    </div>
+    <button class="results-link" id="viewResultsBtn">
+      <i class="fa-solid fa-ranking-star"></i> Xem kết quả bình chọn
+    </button>
+    <div class="gate-notice" id="gateNotice">Em bình chọn trước để mở kết quả nhé!</div>
+  </header>
+
+  <div id="formWrap">
+
+    <section>
+      <div class="section-head">
+        <div class="icon-circle"><i class="fa-solid fa-clipboard-list"></i></div>
+        <h2>Nội dung buổi sinh hoạt</h2>
+      </div>
+      <ul class="content-list">
+        <li><span class="dot-icon"></span>
+          Phổ biến kế hoạch học tập năm học 2026–2027</li>
+        <li><span class="dot-icon"></span>
+          Lắng nghe ý kiến, tâm tư của sinh viên</li>
+        <li><span class="dot-icon"></span>
+          Kiện toàn Ban cán sự lớp (giữ nguyên, bổ sung hoặc thay đổi theo kết quả bình chọn)</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div class="icon-circle"><i class="fa-solid fa-clock"></i></div>
+        <h2>Em có thể tham dự lúc nào?</h2>
+      </div>
+      <p class="section-sub">Chọn một hoặc nhiều khung giờ, có thể chọn cả Offline và Online.</p>
+
+      <div class="time-group offline">
+        <div class="group-label offline"><i class="fa-solid fa-building"></i> Offline</div>
+
+        <label class="slot" data-format="Offline">
+          <input type="checkbox" value="Offline · 13:00, Thứ 4 - 16/09/2026">
+          <span class="box"><i class="fa-solid fa-check"></i></span>
+          <span class="info"><span class="day">Thứ 4 · 16/09/2026</span><span class="time">13:00</span></span>
+        </label>
+        <label class="slot" data-format="Offline">
+          <input type="checkbox" value="Offline · 09:30, Thứ 5 - 17/09/2026">
+          <span class="box"><i class="fa-solid fa-check"></i></span>
+          <span class="info"><span class="day">Thứ 5 · 17/09/2026</span><span class="time">09:30</span></span>
+        </label>
+        <label class="slot" data-format="Offline">
+          <input type="checkbox" value="Offline · 10:30, Thứ 5 - 17/09/2026">
+          <span class="box"><i class="fa-solid fa-check"></i></span>
+          <span class="info"><span class="day">Thứ 5 · 17/09/2026</span><span class="time">10:30</span></span>
+        </label>
+        <p class="note-line">Phòng học sẽ được thông báo sau.</p>
+      </div>
+
+      <div class="time-group online">
+        <div class="group-label online"><i class="fa-solid fa-video"></i> Online</div>
+
+        <label class="slot" data-format="Online">
+          <input type="checkbox" value="Online · 14:00, Thứ 4 - 16/09/2026">
+          <span class="box"><i class="fa-solid fa-check"></i></span>
+          <span class="info"><span class="day">Thứ 4 · 16/09/2026</span><span class="time">14:00</span></span>
+        </label>
+        <label class="slot" data-format="Online">
+          <input type="checkbox" value="Online · 18:30, Thứ 5 - 17/09/2026">
+          <span class="box"><i class="fa-solid fa-check"></i></span>
+          <span class="info"><span class="day">Thứ 5 · 17/09/2026</span><span class="time">18:30</span></span>
+        </label>
+        <p class="note-line">Link Google Meet sẽ được gửi sau.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="field">
+        <label for="customTime">Khung giờ khác (nếu các mốc trên chưa phù hợp)</label>
+        <input type="text" id="customTime" placeholder="VD: Tối thứ 6, 19h00">
+      </div>
+      <div class="field">
+        <label for="fullName">Họ và tên - MSSV <span style="font-weight:400;color:var(--text-muted);">(không bắt buộc)</span></label>
+        <input type="text" id="fullName" placeholder="VD: Nguyễn Văn A - 2510xxxxx">
+      </div>
+
+      <div class="error-msg" id="errorMsg">Vui lòng chọn ít nhất một khung giờ hoặc nhập đề xuất khác.</div>
+
+      <button class="submit-btn" id="submitBtn">
+        <i class="fa-solid fa-paper-plane"></i> Gửi bình chọn
+      </button>
+    </section>
+
+  </div>
+
+  <div class="confirm-panel" id="confirmPanel">
+    <div class="confirm-icon"><i class="fa-solid fa-check"></i></div>
+    <h3>Cảm ơn em đã bình chọn!</h3>
+    <p>Kết quả sẽ được GVCN tổng hợp để chốt lịch sinh hoạt chính thức cho lớp.</p>
+    <div class="recap" id="recapBox"></div>
+    <p class="hint" style="margin-bottom:14px;">Bấm "Xem kết quả bình chọn" ở đầu trang để xem kết quả nhé.</p>
+    <button class="redo-link" id="redoBtn">Bình chọn lại</button>
+  </div>
+
+  <div class="results-panel" id="resultsPanel" style="display:none;">
+    <div style="padding:26px 24px 4px;">
+      <div class="section-head">
+        <div class="icon-circle"><i class="fa-solid fa-ranking-star"></i></div>
+        <h2>Kết quả bình chọn</h2>
+      </div>
+      <p class="section-sub" id="resultsSummary">Đang tải...</p>
+    </div>
+    <div id="resultsBars" style="padding:0 24px;"></div>
+
+    <div style="padding:18px 24px 2px;">
+      <div class="section-head" style="margin-bottom:8px;">
+        <div class="icon-circle"><i class="fa-solid fa-list-check"></i></div>
+        <h2>Danh sách đã bình chọn</h2>
+      </div>
+    </div>
+    <div id="resultsList" style="padding:0 24px 6px;"></div>
+
+    <div style="padding:8px 24px 26px;">
+      <button class="redo-link" id="backFromResults">← Quay lại bình chọn</button>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span class="bell"><i class="fa-solid fa-bell"></i></span>
+    <div>
+      <p class="footnote-title">Hạn chót bình chọn</p>
+      <p class="footnote-time">12h00, Thứ 6 · 11/09 <span>(còn 2 ngày)</span></p>
+    </div>
+  </div>
+
+  <div style="height:8px;"></div>
+
+</div>
+
+<script>
+  const slots = document.querySelectorAll('.slot');
+  const slotDefs = Array.from(slots).map(s => ({
+    value: s.querySelector('input').value,
+    format: s.dataset.format,
+    label: s.dataset.format + ' · ' + s.querySelector('.day').textContent + ', ' + s.querySelector('.time').textContent
+  }));
+
+  slots.forEach(slot => {
+    slot.addEventListener('click', () => {
+      const input = slot.querySelector('input');
+      input.checked = !input.checked;
+      slot.classList.toggle('selected', input.checked);
+    });
+  });
+
+  function shortLabel(value){
+    const found = slotDefs.find(d => d.value === value);
+    return found ? found.label : value;
+  }
+
+  const STORAGE_OK = (typeof window.storage !== 'undefined' && window.storage !== null);
+
+  async function refreshCount(){
+    if(!STORAGE_OK) return;
+    try{
+      const res = await window.storage.list('vote:', true);
+      if(res && res.keys){
+        document.getElementById('voteCountNum').textContent = res.keys.length;
+        document.getElementById('voteCount').style.display = 'inline-flex';
+      }
+    }catch(e){
+      // silently ignore if storage/list unavailable
+    }
+  }
+  refreshCount();
+
+  async function hasVoted(){
+    if(!STORAGE_OK) return false;
+    try{
+      const r = await window.storage.get('hasVoted', false);
+      return !!(r && r.value === '1');
+    }catch(e){ return false; }
+  }
+
+  async function markVoted(){
+    if(!STORAGE_OK) return;
+    try{ await window.storage.set('hasVoted', '1', false); }catch(e){ /* best effort */ }
+  }
+
+  async function updateResultsButtonState(){
+    const btn = document.getElementById('viewResultsBtn');
+    const voted = await hasVoted();
+    if(voted){
+      btn.classList.remove('locked');
+      btn.innerHTML = '<i class="fa-solid fa-ranking-star"></i> Xem kết quả bình chọn';
+    }else{
+      btn.classList.add('locked');
+      btn.innerHTML = '<i class="fa-solid fa-lock"></i> Bình chọn để mở kết quả';
+    }
+  }
+  updateResultsButtonState();
+
+  // Link Google Apps Script của GVCN. Mỗi lượt bình chọn sẽ tự động gửi vào đây.
+  const SHEET_URL = 'https://script.google.com/a/macros/uef.edu.vn/s/AKfycbzLwNNq9vpLbil46Q-BRdqp-0f4AyM_CTSwZsDgEEQsKxFuWCPrnxbMsPkoxPJTLYK8/exec';
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const chosen = Array.from(slots).filter(s => s.querySelector('input').checked)
+                         .map(s => s.querySelector('input').value);
+    const custom = document.getElementById('customTime').value.trim();
+    const name = document.getElementById('fullName').value.trim();
+    const errorBox = document.getElementById('errorMsg');
+
+    if(chosen.length === 0 && !custom){
+      errorBox.style.display = 'block';
+      return;
+    }
+    errorBox.style.display = 'none';
+
+    const vote = {
+      name: name || '(không cung cấp)',
+      choices: chosen,
+      custom: custom || null,
+      submittedAt: new Date().toISOString()
+    };
+
+    const key = 'vote:' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    try{
+      await window.storage.set(key, JSON.stringify(vote), true);
+    }catch(e){
+      console.error('Không lưu được bình chọn:', e);
+    }
+    await markVoted();
+
+    const sheetUrl = SHEET_URL;
+    if(sheetUrl){
+      try{
+        await fetch(sheetUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type': 'text/plain;charset=utf-8'},
+          body: JSON.stringify({
+            thoiGianGui: vote.submittedAt,
+            hoTen: vote.name,
+            khungGioDaChon: vote.choices.map(shortLabel).join('; '),
+            deXuatKhac: vote.custom || ''
+          })
+        });
+      }catch(e){
+        console.error('Gửi Google Sheet thất bại:', e);
+      }
+    }
+
+    const recap = document.getElementById('recapBox');
+    let recapHtml = '';
+    if(chosen.length){
+      recapHtml += '<div><strong>Khung giờ đã chọn:</strong></div>';
+      chosen.forEach(c => recapHtml += '<div>• ' + shortLabel(c) + '</div>');
+    }
+    if(custom){
+      recapHtml += '<div style="margin-top:8px;"><strong>Đề xuất khác:</strong> ' + custom + '</div>';
+    }
+    recap.innerHTML = recapHtml;
+
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('confirmPanel').style.display = 'block';
+    refreshCount();
+    updateResultsButtonState();
+  });
+
+  document.getElementById('redoBtn').addEventListener('click', () => {
+    document.getElementById('confirmPanel').style.display = 'none';
+    document.getElementById('formWrap').style.display = 'block';
+  });
+
+  async function loadResults(){
+    const summary = document.getElementById('resultsSummary');
+    const barsBox = document.getElementById('resultsBars');
+    const listBox = document.getElementById('resultsList');
+    summary.textContent = 'Đang tải...';
+    barsBox.innerHTML = '';
+    listBox.innerHTML = '';
+
+    if(!STORAGE_OK){
+      summary.textContent = 'Trình xem hiện tại chưa hỗ trợ hiển thị kết quả trực tiếp. GVCN có thể xem đầy đủ trong Google Sheet.';
+      return;
+    }
+
+    let votes = [];
+    try{
+      const res = await window.storage.list('vote:', true);
+      const keys = (res && res.keys) ? res.keys : [];
+      for(const k of keys){
+        try{
+          const item = await window.storage.get(k, true);
+          if(item && item.value) votes.push(JSON.parse(item.value));
+        }catch(e){ /* skip unreadable entry */ }
+      }
+    }catch(e){
+      summary.textContent = 'Không tải được kết quả. Vui lòng thử lại.';
+      return;
+    }
+
+    if(votes.length === 0){
+      summary.textContent = 'Chưa có em nào bình chọn.';
+      return;
+    }
+    summary.textContent = votes.length + ' em đã bình chọn. Khung giờ nhiều lượt nhất hiện lên đầu.';
+
+    const tally = {};
+    slotDefs.forEach(d => tally[d.value] = 0);
+    votes.forEach(v => (v.choices || []).forEach(c => { if(tally[c] !== undefined) tally[c]++; }));
+
+    const ranked = slotDefs.map(d => ({...d, count: tally[d.value]}))
+                            .sort((a, b) => b.count - a.count);
+    const max = Math.max(1, ...ranked.map(r => r.count));
+
+    barsBox.innerHTML = ranked.map(r => `
+      <div class="result-row ${r.format.toLowerCase()}">
+        <div class="r-top"><span class="r-label">${r.label}</span><span class="r-count">${r.count} lượt</span></div>
+        <div class="r-track"><div class="r-fill" style="width:${(r.count / max) * 100}%"></div></div>
+      </div>
+    `).join('');
+
+    const sortedVotes = votes.slice().sort((a, b) => (a.submittedAt || '').localeCompare(b.submittedAt || ''));
+    listBox.innerHTML = sortedVotes.map(v => {
+      const parts = [];
+      if(v.choices && v.choices.length) parts.push(v.choices.map(shortLabel).join('; '));
+      if(v.custom) parts.push('Đề xuất khác: ' + v.custom);
+      return `<div class="respondent">
+        <div class="r-name">${v.name}</div>
+        <div class="r-choices">${parts.join(' · ')}</div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('viewResultsBtn').addEventListener('click', async () => {
+    if(!(await hasVoted())){
+      const notice = document.getElementById('gateNotice');
+      notice.style.display = 'block';
+      setTimeout(() => { notice.style.display = 'none'; }, 2500);
+      return;
+    }
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('confirmPanel').style.display = 'none';
+    document.getElementById('resultsPanel').style.display = 'block';
+    loadResults();
+  });
+
+  document.getElementById('backFromResults').addEventListener('click', () => {
+    document.getElementById('resultsPanel').style.display = 'none';
+    document.getElementById('formWrap').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
