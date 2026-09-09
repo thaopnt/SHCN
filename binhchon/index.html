@@ -511,38 +511,18 @@
     return found ? found.label : value;
   }
 
-  const STORAGE_OK = (typeof window.storage !== 'undefined' && window.storage !== null);
+  // Link Google Apps Script của GVCN. Nguồn dữ liệu duy nhất (ghi và đọc kết quả).
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwOAFyiLUSOqW5PSgCecYsBHn-k1s5e5djobIL_uURm-vh8rONwjQxG_WiWeq1Vnxk/exec';
 
-  async function refreshCount(){
-    if(!STORAGE_OK) return;
-    try{
-      const res = await window.storage.list('vote:', true);
-      if(res && res.keys){
-        document.getElementById('voteCountNum').textContent = res.keys.length;
-        document.getElementById('voteCount').style.display = 'inline-flex';
-      }
-    }catch(e){
-      // silently ignore if storage/list unavailable
-    }
+  function hasVotedLocal(){
+    try{ return localStorage.getItem('shcnHk1aVoted') === '1'; }catch(e){ return false; }
   }
-  refreshCount();
-
-  async function hasVoted(){
-    if(!STORAGE_OK) return false;
-    try{
-      const r = await window.storage.get('hasVoted', false);
-      return !!(r && r.value === '1');
-    }catch(e){ return false; }
+  function markVotedLocal(){
+    try{ localStorage.setItem('shcnHk1aVoted', '1'); }catch(e){ /* best effort */ }
   }
 
-  async function markVoted(){
-    if(!STORAGE_OK) return;
-    try{ await window.storage.set('hasVoted', '1', false); }catch(e){ /* best effort */ }
-  }
-
-  async function updateResultsButtonState(){
+  function setResultsButtonState(voted){
     const btn = document.getElementById('viewResultsBtn');
-    const voted = await hasVoted();
     if(voted){
       btn.classList.remove('locked');
       btn.innerHTML = '<i class="fa-solid fa-ranking-star"></i> Xem kết quả bình chọn';
@@ -551,22 +531,40 @@
       btn.innerHTML = '<i class="fa-solid fa-lock"></i> Bình chọn để mở kết quả';
     }
   }
-  updateResultsButtonState();
+  setResultsButtonState(hasVotedLocal());
 
-  // Link Google Apps Script của GVCN. Mỗi lượt bình chọn sẽ tự động gửi vào đây.
-  const SHEET_URL = 'https://script.google.com/a/macros/uef.edu.vn/s/AKfycbzLwNNq9vpLbil46Q-BRdqp-0f4AyM_CTSwZsDgEEQsKxFuWCPrnxbMsPkoxPJTLYK8/exec';
+  async function fetchSheetData(){
+    const res = await fetch(SHEET_URL, {method: 'GET'});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(!data || data.status !== 'ok') throw new Error('bad response');
+    return data.respondents || [];
+  }
+
+  async function refreshCount(){
+    try{
+      const respondents = await fetchSheetData();
+      document.getElementById('voteCountNum').textContent = respondents.length;
+      document.getElementById('voteCount').style.display = 'inline-flex';
+    }catch(e){
+      // silently ignore, header pill just stays hidden
+    }
+  }
+  refreshCount();
+
   document.getElementById('submitBtn').addEventListener('click', async () => {
     const chosen = Array.from(slots).filter(s => s.querySelector('input').checked)
                          .map(s => s.querySelector('input').value);
     const custom = document.getElementById('customTime').value.trim();
     const name = document.getElementById('fullName').value.trim();
     const errorBox = document.getElementById('errorMsg');
+    const submitBtn = document.getElementById('submitBtn');
 
     if(chosen.length === 0 && !custom){
+      errorBox.textContent = 'Vui lòng chọn ít nhất một khung giờ hoặc nhập đề xuất khác.';
       errorBox.style.display = 'block';
       return;
     }
-    errorBox.style.display = 'none';
 
     const vote = {
       name: name || '(không cung cấp)',
@@ -575,48 +573,49 @@
       submittedAt: new Date().toISOString()
     };
 
-    const key = 'vote:' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
+
     try{
-      await window.storage.set(key, JSON.stringify(vote), true);
-    }catch(e){
-      console.error('Không lưu được bình chọn:', e);
-    }
-    await markVoted();
+      const res = await fetch(SHEET_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},
+        body: JSON.stringify({
+          thoiGianGui: vote.submittedAt,
+          hoTen: vote.name,
+          khungGioDaChon: vote.choices.map(shortLabel).join('; '),
+          deXuatKhac: vote.custom || ''
+        })
+      });
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if(!data || data.status !== 'ok') throw new Error('bad response');
 
-    const sheetUrl = SHEET_URL;
-    if(sheetUrl){
-      try{
-        await fetch(sheetUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {'Content-Type': 'text/plain;charset=utf-8'},
-          body: JSON.stringify({
-            thoiGianGui: vote.submittedAt,
-            hoTen: vote.name,
-            khungGioDaChon: vote.choices.map(shortLabel).join('; '),
-            deXuatKhac: vote.custom || ''
-          })
-        });
-      }catch(e){
-        console.error('Gửi Google Sheet thất bại:', e);
+      errorBox.style.display = 'none';
+      markVotedLocal();
+
+      const recap = document.getElementById('recapBox');
+      let recapHtml = '';
+      if(chosen.length){
+        recapHtml += '<div><strong>Khung giờ đã chọn:</strong></div>';
+        chosen.forEach(c => recapHtml += '<div>• ' + shortLabel(c) + '</div>');
       }
-    }
+      if(custom){
+        recapHtml += '<div style="margin-top:8px;"><strong>Đề xuất khác:</strong> ' + custom + '</div>';
+      }
+      recap.innerHTML = recapHtml;
 
-    const recap = document.getElementById('recapBox');
-    let recapHtml = '';
-    if(chosen.length){
-      recapHtml += '<div><strong>Khung giờ đã chọn:</strong></div>';
-      chosen.forEach(c => recapHtml += '<div>• ' + shortLabel(c) + '</div>');
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('confirmPanel').style.display = 'block';
+      refreshCount();
+      setResultsButtonState(true);
+    }catch(e){
+      errorBox.textContent = 'Gửi bình chọn thất bại (không kết nối được Google Sheet). Vui lòng thử lại.';
+      errorBox.style.display = 'block';
+    }finally{
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Gửi bình chọn';
     }
-    if(custom){
-      recapHtml += '<div style="margin-top:8px;"><strong>Đề xuất khác:</strong> ' + custom + '</div>';
-    }
-    recap.innerHTML = recapHtml;
-
-    document.getElementById('formWrap').style.display = 'none';
-    document.getElementById('confirmPanel').style.display = 'block';
-    refreshCount();
-    updateResultsButtonState();
   });
 
   document.getElementById('redoBtn').addEventListener('click', () => {
@@ -632,37 +631,29 @@
     barsBox.innerHTML = '';
     listBox.innerHTML = '';
 
-    if(!STORAGE_OK){
-      summary.textContent = 'Trình xem hiện tại chưa hỗ trợ hiển thị kết quả trực tiếp. GVCN có thể xem đầy đủ trong Google Sheet.';
-      return;
-    }
-
-    let votes = [];
+    let respondents = [];
     try{
-      const res = await window.storage.list('vote:', true);
-      const keys = (res && res.keys) ? res.keys : [];
-      for(const k of keys){
-        try{
-          const item = await window.storage.get(k, true);
-          if(item && item.value) votes.push(JSON.parse(item.value));
-        }catch(e){ /* skip unreadable entry */ }
-      }
+      respondents = await fetchSheetData();
     }catch(e){
-      summary.textContent = 'Không tải được kết quả. Vui lòng thử lại.';
+      summary.textContent = 'Không tải được kết quả từ Google Sheet. Vui lòng thử lại.';
       return;
     }
 
-    if(votes.length === 0){
+    if(respondents.length === 0){
       summary.textContent = 'Chưa có em nào bình chọn.';
       return;
     }
-    summary.textContent = votes.length + ' em đã bình chọn. Khung giờ nhiều lượt nhất hiện lên đầu.';
+    summary.textContent = respondents.length + ' em đã bình chọn. Khung giờ nhiều lượt nhất hiện lên đầu.';
 
     const tally = {};
-    slotDefs.forEach(d => tally[d.value] = 0);
-    votes.forEach(v => (v.choices || []).forEach(c => { if(tally[c] !== undefined) tally[c]++; }));
+    slotDefs.forEach(d => tally[d.label] = 0);
+    respondents.forEach(r => {
+      String(r.choices || '').split(';').map(s => s.trim()).forEach(c => {
+        if(tally[c] !== undefined) tally[c]++;
+      });
+    });
 
-    const ranked = slotDefs.map(d => ({...d, count: tally[d.value]}))
+    const ranked = slotDefs.map(d => ({...d, count: tally[d.label]}))
                             .sort((a, b) => b.count - a.count);
     const max = Math.max(1, ...ranked.map(r => r.count));
 
@@ -673,21 +664,21 @@
       </div>
     `).join('');
 
-    const sortedVotes = votes.slice().sort((a, b) => (a.submittedAt || '').localeCompare(b.submittedAt || ''));
-    listBox.innerHTML = sortedVotes.map(v => {
+    listBox.innerHTML = respondents.map(r => {
       const parts = [];
-      if(v.choices && v.choices.length) parts.push(v.choices.map(shortLabel).join('; '));
-      if(v.custom) parts.push('Đề xuất khác: ' + v.custom);
+      if(r.choices) parts.push(r.choices);
+      if(r.custom) parts.push('Đề xuất khác: ' + r.custom);
       return `<div class="respondent">
-        <div class="r-name">${v.name}</div>
+        <div class="r-name">${r.name}</div>
         <div class="r-choices">${parts.join(' · ')}</div>
       </div>`;
     }).join('');
   }
 
-  document.getElementById('viewResultsBtn').addEventListener('click', async () => {
-    if(!(await hasVoted())){
-      const notice = document.getElementById('gateNotice');
+  document.getElementById('viewResultsBtn').addEventListener('click', () => {
+    const notice = document.getElementById('gateNotice');
+    if(!hasVotedLocal()){
+      notice.textContent = 'Em bình chọn trước để mở kết quả nhé!';
       notice.style.display = 'block';
       setTimeout(() => { notice.style.display = 'none'; }, 2500);
       return;
